@@ -1,0 +1,128 @@
+---
+title: "GOUP 10 ASSIGMENT I"
+author: "Group-Homework-statistics for Data science"
+date: "2024-01-16"
+output: pdf_document
+---
+```{r}
+setwd("C:/Users/HP/Documents")
+```
+
+#1) Two methods are applied to train patients with senile dementia to care for themselves. After the completion of the training, patients are asked to take 20 tests involving activities of daily living. The response from each patient is the proportion of his or her tests that are successful. 
+```{r}
+Group1=c(0.05, 0.15, 0.35, 0.25, 0.20, 0.05, 0.10, 0.05, 0.30, 0.05, 0.25) 
+Group2=c(0, 0.15, 0, 0.05, 0, 0, 0.05, 0.10)
+# Combine the data into a single vector to visualize  Distribution of tests result
+all_data<- c(Group1, Group2)
+hist(all_data, breaks = 14, col = "blue", xlab = "Proportion of Successful Tests", main = "Distribution of Test Results")
+
+# Add a density plot
+lines(density(all_data), col = "red", lwd = 4)
+
+# Add a legend
+legend("topright", legend = c("Histogram", "Density"), fill = c("blue", "red"))
+```
+
+
+```{r}
+
+
+
+```
+
+
+```{r}
+# Perform the independent sample t-test
+t_test_result <- t.test(Group1, Group2)
+t_test_result
+
+```
+The difference between the two groups is statistically significant. the p-value is less than a chosen significance level (commonly 0.05).which is p-value = 0.007736.So we reject the null hypothesis and conclude that there is a significant difference between the two groups.
+
+##Transform the data to Y = sqrt(X).
+
+```{r}
+#Original data()
+Group1=c(0.05, 0.15, 0.35, 0.25, 0.20, 0.05, 0.10, 0.05, 0.30, 0.05, 0.25) 
+Group2=c(0, 0.15, 0, 0.05, 0, 0, 0.05, 0.10)
+# Transformed Data
+Group1_sqrt<-sqrt(Group1)
+Group2_sqrt<-sqrt(Group2)
+cat("Group1: ", Group1_sqrt, "\n")
+cat("Group2: ", Group2_sqrt, "\n")
+```
+
+
+```{r}
+# Assuming Group1_sqrt and Group2_sqrt contain the transformed data for Group 1 and Group 2 respectively
+
+# Create a scatter plot for Group 1
+plot(Group1_sqrt, main = "Scatter Plot of Transformed data", xlab = "Group 1", ylab = "Group 2", col = "blue", pch = 16)
+
+# Add points for Group 2 to the existing plot
+points(Group2_sqrt, col = "red", pch = 16)
+
+# Add a legend
+legend("topright", legend = c("Group 1", "Group 2"), col = c("blue", "red"), pch = 16)
+
+```
+
+##Coduct t-test for Transformed  data
+
+```{r}
+
+t_test_resul2=t.test(Group1_sqrt,Group2_sqrt)
+t_test_resul2
+
+```
+##Compare The t_test result of original and Trasformed Data
+The p-value obtained after conducting the t-test on the original data (0.007736) and the transformed data (0.005381) indicates the probability of observing the observed difference in means (or more extreme) under the null hypothesis that there is no difference between the two groups.
+
+A lower p-value suggests stronger evidence against the null hypothesis. In this case, both p-values (0.007736 and 0.005381) are less than the commonly used significance level of 0.05. Therefore, we would reject the null hypothesis and conclude that there is a statistically significant difference between the two groups, both in the original data and the transformed data.
+
+#
+```{r}
+data=read.csv("E:\\Data Science Course\\Advanced Statistics\\ESTRADL.csv")
+data
+```
+
+
+
+```{r}
+
+
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+

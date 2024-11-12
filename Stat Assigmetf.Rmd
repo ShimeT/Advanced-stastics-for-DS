@@ -1,0 +1,198 @@
+---
+title: "GOUP 10 ASSIGMENT I"
+author: "Group-Homework-statistics for Data science"
+date: "2024-01-16"
+output: pdf_document
+---
+
+
+#<b1>1) Two methods are applied to train patients with senile dementia to care for themselves. After the completion of the training, patients are asked to take 20 tests involving activities of daily living. The response from each patient is the proportion of his or her tests that are successful.<b1/> 
+```{r}
+Group1=c(0.05, 0.15, 0.35, 0.25, 0.20, 0.05, 0.10, 0.05, 0.30, 0.05, 0.25) 
+Group2=c(0, 0.15, 0, 0.05, 0, 0, 0.05, 0.10)
+# Combine the data into a single vector to visualize  Distribution of tests result
+all_data<- c(Group1, Group2)
+hist(all_data, breaks = 14, col = "blue", xlab = "Proportion of Successful Tests", main = "Distribution of Test Results")
+
+# Add a density plot
+lines(density(all_data), col = "red", lwd = 4)
+
+# Add a legend
+legend("topright", legend = c("Histogram", "Density"), fill = c("blue", "red"))
+```
+
+
+```{r}
+# Perform the independent sample t-test
+t_test_result <- t.test(Group1, Group2)
+t_test_result
+
+```
+The difference between the two groups is statistically significant. the p-value is less than a chosen Moderately significance level (commonly 0.05).which is p-value = 0.007736.So we reject the null hypothesis and conclude that there is a significant difference between the two groups.
+
+##Transform the data to Y = sqrt(X).
+
+```{r}
+#Original data()
+Group1=c(0.05, 0.15, 0.35, 0.25, 0.20, 0.05, 0.10, 0.05, 0.30, 0.05, 0.25) 
+Group2=c(0, 0.15, 0, 0.05, 0, 0, 0.05, 0.10)
+# Transformed Data
+Group1_sqrt<-sqrt(Group1)
+Group2_sqrt<-sqrt(Group2)
+cat("Group1: ", Group1_sqrt, "\n")
+cat("Group2: ", Group2_sqrt, "\n")
+```
+
+
+```{r}
+# Assuming Group1_sqrt and Group2_sqrt contain the transformed data for Group 1 and Group 2 respectively
+
+# Create a scatter plot for Group 1
+plot(Group1_sqrt, main = "Scatter Plot of Transformed data", xlab = "Group 1", ylab = "Group 2", col = "blue", pch = 16)
+
+# Add points for Group 2 to the existing plot
+points(Group2_sqrt, col = "red", pch = 16)
+
+# Add a legend
+legend("topright", legend = c("Group 1", "Group 2"), col = c("blue", "red"), pch = 16)
+
+```
+
+##Coduct t-test for Transformed  data
+
+```{r}
+
+t_test_resul2=t.test(Group1_sqrt,Group2_sqrt)
+t_test_resul2
+
+```
+##Compare The t_test result of original and Trasformed Data
+The p-value obtained after conducting the t-test on the original data (0.007736) and the transformed data (0.005381) indicates the probability of observing the observed difference in means (or more extreme) under the null hypothesis that there is no difference between the two groups.
+
+A lower p-value suggests stronger evidence against the null hypothesis. In this case, both p-values (0.007736 and 0.005381) are less than the commonly used significance level of 0.05. Therefore, we would reject the null hypothesis and conclude that there is a statistically significant difference between the two groups, both in the original data and the transformed data.
+
+#
+```{r}
+data=read.csv("E:\\Data Science Course\\Advanced Statistics\\ESTRADL.csv")
+head(data)
+```
+
+<b1>(a) Is there a crude association between either measure of adiposity (BMI, WHR), considered separately, and serum estradiol<b1/>
+```{r}
+BMI <- data$BMI
+Estradl <- data$Estradl
+correlation <- cor(BMI, Estradl, method = "pearson")
+correlation
+
+```
+
+```{r}
+library(ggplot2)
+
+# Assuming our data frame is called 'data' and the columns are named 'BMI' and 'serum_estradiol'
+# Create a scatter plot
+ggplot(data, aes(x = BMI, y = Estradl)) +
+  geom_point() +  # Add points
+  labs(x = "BMI", y = "Estradl") +  # Label axes
+  ggtitle("Scatter Plot of BMI vs Serum Estradiol")  # Add title
+```
+
+
+
+```{r}
+WHR <- data$WHR
+Estradl <- data$Estradl
+correlation <- cor(WHR, Estradl, method = "pearson")
+correlation
+```
+```{r}
+# Create a scatter plot
+ggplot(data, aes(x = WHR, y = Estradl)) +
+  geom_point() +  # Add points
+  labs(x = "WHR", y = "Estradl") +  # Label axes
+  ggtitle("Scatter Plot of WHR vs Estradl")  # Add title
+
+```
+## In summary, based on these correlation coefficients, we can conclude that there is a weak, but not significant, negative linear relationship between WHR/BMI and serum estradiol, hence the relationship is not strong, and the correlation coefficient being close to zero suggests that there may not be a significant linear relationship between a given variables.so there is no a crude association between either measure of adiposity (BMI, WHR), considered separately, and serum estradiol.
+
+#(b) Are these relationships similar for Caucasian and African-American women?
+```{r}
+# Subset the data for Caucasian and African-American women
+caucasian_data <- subset(data, Ethnic == 0)  # Assuming 0 represents Caucasian
+african_american_data <- subset(data, Ethnic == 1)  # Assuming 1 represents African-American
+# Correlation analysis for Caucasian women
+correlation_caucasian <- cor(caucasian_data$WHR, caucasian_data$Estradl)
+
+# Correlation analysis for African-American women
+correlation_african_american <- cor(african_american_data$WHR,african_american_data$Estradl)
+# Print correlation coefficients
+print(paste("Correlation coefficient for Caucasian women:", correlation_caucasian))
+print(paste("Correlation coefficient for African-American women:", correlation_african_american))
+
+```
+.For Caucasian women, the correlation coefficient is approximately -0.1299. This suggests a weak negative correlation between WHR and serum estradiol among Caucasian women, meaning that as WHR increases, serum estradiol tends to decrease slightly.
+
+.For African-American women, the correlation coefficient is approximately 0.1249. This indicates a weak positive correlation between WHR and serum estradiol among African-American women, implying that as WHR increases, serum estradiol tends to increase slightly.
+##These results suggest that the relationship between WHR and serum estradiol differs between Caucasian and African-American women
+
+```{r}
+# Correlation analysis for Caucasian women
+correlation_caucasian <- cor(caucasian_data$BMI, caucasian_data$Estradl)
+
+# Correlation analysis for African-American women
+correlation_african_american <- cor(african_american_data$BMI,african_american_data$Estradl)
+# Print correlation coefficients
+print(paste("Correlation coefficient for Caucasian women:", correlation_caucasian))
+print(paste("Correlation coefficient for African-American  women:",correlation_african_american))
+```
+.For Caucasian women, the correlation coefficient of approximately -0.205 suggests a moderate negative correlation between BMI and serum estradiol. This indicates that as BMI increases, serum estradiol tends to decrease moderately.
+
+.For African-American women, the correlation coefficient of approximately 0.109 suggests a weak positive correlation between BMI and serum estradiol. This implies that as BMI increases, serum estradiol tends to increase slightly.
+##Similar to the WHR results, these findings indicate that there is a difference in the relationship between BMI and serum estradiol among Caucasian and African-American women.
+
+<h1>Do the relationships between the adiposity measures and serum estradiol persist after controlling for the other breast-cancer risk factors in list items 1 to 6?<h1/>
+To assess whether the relationships between the adiposity measures (BMI and WHR) and serum estradiol persist after controlling for other breast cancer risk factors, we perform multiple linear regression
+```{r}
+# Fit a multiple linear regression model
+model <- lm(Estradl~BMI+WHR+Ethnic + Entage + Numchild + Agefbo + Anykids + Agemenar, data=data)
+summary(model)
+```
+<h1>Interpretation of Coefficients:<h1/>
+   <h2> 'BMI' and 'WHR'<h2/>
+   <p>Neither BMI nor WHR appears to be statistically significant predictors of serum estradiol. This suggests that after
+controlling for other variables, there is no significant relationship between these adiposity measures and serum estradiol.
+'Ethnic': Ethnicity (African-American vs. Caucasian) is a statistically significant predictor of serum estradiol. AfricanAmerican ethnicity is associated with a decrease in serum estradiol levels compared to Caucasian ethnicity.
+'Entage': Age is not statistically significant at the conventional significance level of 0.05,
+'Numchild', 'Agefbo', 'Anykids', 'Agemenar': None of these variables are statistically significant predictors of serum
+estradiol. Overall, the analysis suggests that after controlling for other variables, BMI and WHR are not significantly
+associated with serum estradiol levels in this dataset. However, ethnicity (African-American vs. Caucasian) does appear to
+be a significant predictor of serum estradiol levels.<p/>
+
+<b1>d). One debate in the breast-cancer literature is whether overall adiposity (BMI) or central (abdominal) adiposity (WHR) is a better indicator of breast-cancer risk. Perform analyses to inform the debate as to which measure of adiposity is more closely related to serum estradiol either crudely or after adjusting for other breast-cancer risk factors.<b1/>
+
+<b2> Separate regression analyses as crude and adjusted<b2/>
+
+```{r}
+# Crude Analysis for BMI
+# Simple linear regression for BMI
+model_bmi <- lm(Estradl~ BMI, data = data)
+summary(model_bmi)
+```
+```{r}
+#Crude Analysis for WHR
+# Simple linear regression for WHR
+model_whr <- lm(Estradl ~ WHR, data = data)
+summary(model_whr)
+```
+```{r}
+# Adjusted analysis for BMI
+lm_BMI_adjusted <- lm(Estradl~BMI+WHR+Ethnic + Entage + Numchild + Agefbo + Anykids + Agemenar, data=data)
+summary(lm_BMI_adjusted)
+
+```
+
+
+
+
+
+
